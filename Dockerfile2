@@ -1,0 +1,14 @@
+# Dockerfile
+
+# Verwenden Sie das Basisimage
+FROM docker.io/jupyter/pyspark-notebook:spark-3.5.0
+
+USER root 
+RUN apt-get update && apt-get install -y curl
+RUN pip3 install delta-spark==3.0.0
+RUN pip3 install pyspark==3.5.0
+RUN pip3 install boto3
+RUN pip3 install minio
+
+
+
