@@ -9,6 +9,11 @@ RUN pip3 install delta-spark==3.0.0
 RUN pip3 install pyspark==3.5.0
 RUN pip3 install boto3
 RUN pip3 install minio
-
-
-
+RUN pip3 install sparksql-magic
+RUN pip3 install pandas
+RUN pip3 install pyarrow
+RUN pip3 install fastparquet
+RUN pip3 install avro
+RUN pip3 install pyorc
+RUN pip3 install jsons
+RUN pip3 install kaggle

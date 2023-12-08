@@ -6,3 +6,6 @@ jupyter-app/
 
 # Ignoriere den minio-Ordner
 minio-data/
+
+
+datasets/

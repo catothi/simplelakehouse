@@ -4,7 +4,7 @@ This is a simple lakehouse including a Spark Cluster (Spark 3.5.0), Single Node 
 
 # Installation
 
-1. Step: docker-compose build .
+1. Step: docker-compose build 
 2. Step: docker-compose up
 3. Step: docker-compose down
 
