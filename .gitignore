@@ -1,0 +1,8 @@
+# Ignoriere den hdfs-Ordner
+hdfs/
+
+# Ignoriere den jupyter-app-Ordner
+jupyter-app/
+
+# Ignoriere den minio-Ordner
+minio-data/

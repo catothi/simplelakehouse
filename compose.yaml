@@ -63,7 +63,7 @@ services:
   minio:
     container_name: minio-container
     image: quay.io/minio/minio:RELEASE.2023-11-15T20-43-25Z.fips
-    command: server --console-address ":9001" /data
+    command: server --console-address ":9001" /minio-data
     ports:
       - '9000:9000'
       - '9001:9001'
@@ -76,7 +76,7 @@ services:
       timeout: 20s
       retries: 3
     volumes:
-      - minio-data:/data
+      - ./minio-data:/minio-data
 
 volumes:
   hdfs:
