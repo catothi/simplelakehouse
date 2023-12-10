@@ -17,3 +17,4 @@ RUN pip3 install avro
 RUN pip3 install pyorc
 RUN pip3 install jsons
 RUN pip3 install kaggle
+RUN pip3 deltalake
