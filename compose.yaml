@@ -63,6 +63,7 @@ services:
   minio:
     container_name: minio-container
     image: quay.io/minio/minio:RELEASE.2023-11-15T20-43-25Z.fips
+    platform: linux/x86_64
     command: server --console-address ":9001" /minio-data
     ports:
       - '9000:9000'
