@@ -1,12 +1,23 @@
-# Dockerfile
-
-# Verwenden Sie das Basisimage
-FROM docker.io/jupyter/pyspark-notebook:spark-3.5.0
+FROM jupyter/base-notebook:latest
+ARG spark_version=4.0.0
+ARG hadoop_version=3.3 
 
 USER root 
 RUN apt-get update && apt-get install -y curl
-RUN pip3 install delta-spark==3.0.0
-RUN pip3 install pyspark==3.5.0
+
+RUN apt-get update && \
+    apt-get install -y openjdk-17-jdk && \
+    apt-get clean
+
+#ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-arm64
+ENV PATH="$JAVA_HOME/bin:$PATH"
+
+
+
+# Python-Pakete für Spark 4.0
+RUN pip3 install delta-spark==4.0.0
+RUN pip3 install pyspark==4.0.0
 RUN pip3 install boto3
 RUN pip3 install minio
 RUN pip3 install sparksql-magic

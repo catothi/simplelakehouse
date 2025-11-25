@@ -1,47 +1,43 @@
 version: '3'
 
 services:
-  spark:
+  spark-master:
+    image: spark-master:latest
     container_name: spark-master-container
-    image: docker.io/bitnami/spark:3.5
     build:
       context: .
       dockerfile: Dockerfile
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
     environment:
-      - SPARK_MODE=master
-      - SPARK_RPC_AUTHENTICATION_ENABLED=no
-      - SPARK_RPC_ENCRYPTION_ENABLED=no
-      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
-      - SPARK_SSL_ENABLED=no
-      - SPARK_USER=spark
+      - SPARK_NO_DAEMONIZE=true
     ports:
       - '8080:8080'
+      - '7077:7077'
     volumes:
       - ./hdfs:/hdfs
-
+    networks:
+      - spark-network
 
   spark-worker:
+    image: spark-master:latest
     container_name: spark-worker-container
-    image: docker.io/bitnami/spark:3.5
     build:
       context: .
       dockerfile: Dockerfile
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
     environment:
-      - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://spark-master-container:7077
+      - SPARK_NO_DAEMONIZE=true
       - SPARK_WORKER_MEMORY=5G
       - SPARK_WORKER_CORES=3
-      - SPARK_RPC_AUTHENTICATION_ENABLED=no
-      - SPARK_RPC_ENCRYPTION_ENABLED=no
-      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
-      - SPARK_SSL_ENABLED=no
-      - SPARK_USER=spark
     volumes:
       - ./hdfs:/hdfs
+    depends_on:
+      - spark-master
+    networks:
+      - spark-network
 
   jupyter:
     container_name: jupyter-container
-    image: jupyter/pyspark-notebook:spark-3.5.0
     build:
       context: .
       dockerfile: Dockerfile2
@@ -54,16 +50,18 @@ services:
       - ./hdfs:/hdfs
     working_dir: /hdfs
     command: >
-      start-notebook.sh --ip 0.0.0.0 --port 8888 --NotebookApp.token='admin123admin' --NotebookApp.password='admin123admin'
+      start-notebook.sh --ip 0.0.0.0 --port 8888 
+      --NotebookApp.token='admin123admin' 
+      --NotebookApp.password='admin123admin'
     depends_on:
-      - spark
+      - spark-master
       - spark-worker
-    
+    networks:
+      - spark-network
 
   minio:
     container_name: minio-container
-    image: quay.io/minio/minio:RELEASE.2023-11-15T20-43-25Z.fips
-    platform: linux/x86_64
+    image: minio/minio:latest
     command: server --console-address ":9001" /minio-data
     ports:
       - '9000:9000'
@@ -78,6 +76,12 @@ services:
       retries: 3
     volumes:
       - ./minio-data:/minio-data
+    networks:
+      - spark-network
+
+networks:
+  spark-network:
+    driver: bridge
 
 volumes:
   hdfs:
