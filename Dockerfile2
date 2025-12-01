@@ -9,8 +9,8 @@ RUN apt-get update && \
     apt-get install -y openjdk-17-jdk && \
     apt-get clean
 
-#ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-arm64
+RUN ln -sfn /usr/lib/jvm/java-17-openjdk-$(dpkg --print-architecture) /usr/lib/jvm/default-java
+ENV JAVA_HOME=/usr/lib/jvm/default-java
 ENV PATH="$JAVA_HOME/bin:$PATH"
 
 
