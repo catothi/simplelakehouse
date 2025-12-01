@@ -1,5 +1,5 @@
 # Remarks
-This is a simple lakehouse including a Spark Cluster (Spark 3.5.0), Single Node Minio, and relevant Delta Lake jars used for education purpose during the lecture "Big Data Concepts". No production use.
+This is a simple lakehouse including a Spark Cluster (Spark 4.0.0), Single Node Minio, and relevant Delta Lake jars used for education purpose during the lecture "Big Data Concepts". No production use.
 
 
 # Installation
